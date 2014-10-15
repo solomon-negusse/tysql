@@ -3,21 +3,17 @@ import tables
 
 session = tables.Session()
 
-print "\n 'AND' filtering"
+print "\n 'like %' filtering"
 for query in session.query(tables.Products).filter(
-	and_(tables.Products.prod_price < 4, 
-	tables.Products.vend_id == 'DLL01')):
-	print query.prod_id.strip() + ' ' + query.prod_price.to_eng_string() + \
-		' ' + query.prod_name
+	tables.Products.prod_name.like('%bean bag%')):
+	print query.prod_id.strip() + ' ' + query.prod_name.strip()
 
-print "\n 'IN' filtering\n"
+print "\n 'like _' filtering"
 for query in session.query(tables.Products).filter(
-	tables.Products.vend_id.in_(['DLL01', 'BRS01'])):
-	print query.prod_name.strip() + ' ' + query.prod_price.to_eng_string()
+	tables.Products.prod_name.like('__ inch teddy bear%')):
+	print query.prod_id.strip() + ' ' + query.prod_name.strip()
 
-print "\n 'NOT' filtering\n"
-for query in session.query(tables.Products).filter(
-	not_(tables.Products.vend_id == 'DLL01')):
-	print query.prod_name.strip()
-
-
+print "\n 'like []' filtering"
+for query in session.query(tables.Customers).filter(
+	tables.Customers.cust_contact.like('[JM]%')):
+	print query.cust_contact
